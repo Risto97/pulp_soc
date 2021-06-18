@@ -457,6 +457,12 @@ module pulp_soc import dm::*; #(
               .AXI_USER_WIDTH(AXI_USER_WIDTH)
           ) test_ip_bus();
 
+    AXI_BUS #(.AXI_ADDR_WIDTH(32),
+              .AXI_DATA_WIDTH(32),
+              .AXI_ID_WIDTH(AXI_ID_OUT_WIDTH),
+              .AXI_USER_WIDTH(AXI_USER_WIDTH)
+          ) zipcpu_uart_bus();
+
 
 
     logic s_cluster_isolate_dc;
@@ -810,6 +816,7 @@ module pulp_soc import dm::*; #(
         .l2_interleaved_slaves ( s_mem_l2_bus        ),
         .l2_private_slaves     ( s_mem_l2_pri_bus    ),
         .boot_rom_slave        ( s_mem_rom_bus       ),
+        .zipcpu_uart_slave     ( zipcpu_uart_bus     ),
         .test_ip_slave         ( test_ip_bus         )
         );
 
@@ -824,6 +831,15 @@ module pulp_soc import dm::*; #(
             .axi_slave(test_ip_bus)
         );
 
+    axil_uart_top #(.AXI_ADDR_WIDTH(AXI_ADDR_WIDTH),
+                    .AXI_DATA_WIDTH(AXI_DATA_WIDTH),
+                    .AXI_ID_WIDTH(AXI_ID_WIDTH),
+                    .AXI_USER_WIDTH(AXI_USER_WIDTH))
+                    i_axil_uart_top(
+                        .clk_i(s_soc_clk),
+                        .rst_ni(s_soc_rstn),
+                        .axi_slave(zipcpu_uart_bus)
+                    );
     /* Debug Subsystem */
 
     dmi_jtag #(
