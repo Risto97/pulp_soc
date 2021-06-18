@@ -123,3 +123,6 @@ register_interface:
 test_ip:
     commit: master
     group: Risto97
+wbuart32:
+    commit: master
+    group: Risto97
