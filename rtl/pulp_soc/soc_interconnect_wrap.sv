@@ -58,6 +58,7 @@ module soc_interconnect_wrap
        XBAR_TCDM_BUS.Master     l2_private_slaves[2], // Connects to core-private memory banks
        XBAR_TCDM_BUS.Master     boot_rom_slave, //Connects to the bootrom
        AXI_BUS.Master           zipcpu_uart_slave, // Connects to all the SoC Peripherals
+       AXI_BUS.Master           i2c_slave, // Connects to all the SoC Peripherals
        AXI_BUS.Master           test_ip_slave // Connects to all the SoC Peripherals
      );
 
@@ -180,11 +181,12 @@ module soc_interconnect_wrap
               .AXI_DATA_WIDTH(32),
               .AXI_ID_WIDTH(pkg_soc_interconnect::AXI_ID_OUT_WIDTH),
               .AXI_USER_WIDTH(AXI_USER_WIDTH)
-              ) axi_slaves[4]();
+              ) axi_slaves[5]();
     `AXI_ASSIGN(axi_slave_plug, axi_slaves[0])
     `AXI_ASSIGN(axi_to_axi_lite_bridge, axi_slaves[1])
     `AXI_ASSIGN(test_ip_slave, axi_slaves[2])
     `AXI_ASSIGN(zipcpu_uart_slave, axi_slaves[3])
+    `AXI_ASSIGN(i2c_slave, axi_slaves[4])
 
     //Interconnect instantiation
     soc_interconnect #(

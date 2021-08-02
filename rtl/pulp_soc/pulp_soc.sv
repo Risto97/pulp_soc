@@ -463,6 +463,12 @@ module pulp_soc import dm::*; #(
               .AXI_USER_WIDTH(AXI_USER_WIDTH)
           ) zipcpu_uart_bus();
 
+    AXI_BUS #(.AXI_ADDR_WIDTH(4),
+              .AXI_DATA_WIDTH(32),
+              .AXI_ID_WIDTH(AXI_ID_OUT_WIDTH),
+              .AXI_USER_WIDTH(AXI_USER_WIDTH)
+          ) i2c_bus();
+
 
 
     logic s_cluster_isolate_dc;
@@ -625,12 +631,12 @@ module pulp_soc import dm::*; #(
         .uart_rx                ( uart_rx_i              ),
 
         //I2C
-        .i2c_scl_i              ( i2c_scl_i              ),
-        .i2c_scl_o              ( i2c_scl_o              ),
-        .i2c_scl_oe_o           ( i2c_scl_oe_o           ),
-        .i2c_sda_i              ( i2c_sda_i              ),
-        .i2c_sda_o              ( i2c_sda_o              ),
-        .i2c_sda_oe_o           ( i2c_sda_oe_o           ),
+        .i2c_scl_i              (               ),
+        .i2c_scl_o              (               ),
+        .i2c_scl_oe_o           (            ),
+        .i2c_sda_i              (               ),
+        .i2c_sda_o              (               ),
+        .i2c_sda_oe_o           (            ),
 
         //I2S
         .i2s_slave_sd0_i        ( i2s_slave_sd0_i        ),
@@ -817,7 +823,9 @@ module pulp_soc import dm::*; #(
         .l2_private_slaves     ( s_mem_l2_pri_bus    ),
         .boot_rom_slave        ( s_mem_rom_bus       ),
         .zipcpu_uart_slave     ( zipcpu_uart_bus     ),
-        .test_ip_slave         ( test_ip_bus         )
+        .test_ip_slave         ( test_ip_bus         ),
+        .i2c_slave             ( i2c_bus             )
+
         );
 
     test_ip_top #(
@@ -841,6 +849,22 @@ module pulp_soc import dm::*; #(
                         .axi_slave(zipcpu_uart_bus)
                     );
     /* Debug Subsystem */
+
+    i2c_top #(.AXI_ADDR_WIDTH(4),
+                    .AXI_DATA_WIDTH(AXI_DATA_WIDTH),
+                    .AXI_ID_WIDTH(AXI_ID_WIDTH),
+                    .AXI_USER_WIDTH(AXI_USER_WIDTH))
+                    i_i2c_top(
+                        .clk_i(s_soc_clk),
+                        .rst_ni(s_soc_rstn),
+                        .axi_slave(zipcpu_uart_bus),
+                        .i2c_scl_i(i2c_scl_i),
+                        .i2c_scl_o(i2c_scl_o),
+                        .i2c_scl_t(i2c_scl_oe_o),
+                        .i2c_sda_i(i2c_sda_i),
+                        .i2c_sda_o(i2c_sda_o),
+                        .i2c_sda_t(i2c_sda_oe_o)
+                    );
 
     dmi_jtag #(
         .IdcodeValue          ( `DMI_JTAG_IDCODE    )

@@ -126,3 +126,6 @@ test_ip:
 wbuart32:
     commit: master
     group: Risto97
+verilog-i2c:
+    commit: master
+    group: Risto97
