@@ -839,9 +839,8 @@ module pulp_soc import dm::*; #(
             .axi_slave(test_ip_bus)
         );
 
-    axil_uart_top #(.AXI_ADDR_WIDTH(AXI_ADDR_WIDTH),
-                    .AXI_DATA_WIDTH(AXI_DATA_WIDTH),
-                    .AXI_ID_WIDTH(AXI_ID_WIDTH),
+    axiluart_top #(.AXI_ADDR_WIDTH(AXI_ADDR_WIDTH),
+                    .AXI_ID_WIDTH(AXI_ID_OUT_WIDTH),
                     .AXI_USER_WIDTH(AXI_USER_WIDTH))
                     i_axil_uart_top(
                         .clk_i(s_soc_clk),
