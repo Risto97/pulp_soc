@@ -839,7 +839,7 @@ module pulp_soc import dm::*; #(
             .axi_slave(test_ip_bus)
         );
 
-    axiluart_top #(.AXI_ADDR_WIDTH(AXI_ADDR_WIDTH),
+    axiluart_top #(.AXI_ADDR_WIDTH(4),
                     .AXI_ID_WIDTH(AXI_ID_OUT_WIDTH),
                     .AXI_USER_WIDTH(AXI_USER_WIDTH))
                     i_axil_uart_top(
@@ -849,20 +849,19 @@ module pulp_soc import dm::*; #(
                     );
     /* Debug Subsystem */
 
-    i2c_top #(.AXI_ADDR_WIDTH(4),
-                    .AXI_DATA_WIDTH(AXI_DATA_WIDTH),
-                    .AXI_ID_WIDTH(AXI_ID_WIDTH),
+    i2c_top #(.AXI_ADDR_WIDTH(32),
+                    .AXI_ID_WIDTH(1),
                     .AXI_USER_WIDTH(AXI_USER_WIDTH))
                     i_i2c_top(
                         .clk_i(s_soc_clk),
                         .rst_ni(s_soc_rstn),
-                        .axi_slave(zipcpu_uart_bus),
-                        .i2c_scl_i(i2c_scl_i),
-                        .i2c_scl_o(i2c_scl_o),
-                        .i2c_scl_t(i2c_scl_oe_o),
-                        .i2c_sda_i(i2c_sda_i),
-                        .i2c_sda_o(i2c_sda_o),
-                        .i2c_sda_t(i2c_sda_oe_o)
+                        .axi_slave(i2c_bus),
+                        .i2c_scl_i(i2c_scl_i[0]),
+                        .i2c_scl_o(i2c_scl_o[0]),
+                        .i2c_scl_t(i2c_scl_oe_o[0]),
+                        .i2c_sda_i(i2c_sda_i[0]),
+                        .i2c_sda_o(i2c_sda_o[0]),
+                        .i2c_sda_t(i2c_sda_oe_o[0])
                     );
 
     dmi_jtag #(
