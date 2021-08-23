@@ -117,7 +117,9 @@ module soc_interconnect_wrap
        '{ idx: 0, start_addr: `SOC_MEM_MAP_AXI_PLUG_START_ADDR,    end_addr: `SOC_MEM_MAP_AXI_PLUG_END_ADDR},
        '{ idx: 1, start_addr: `SOC_MEM_MAP_PERIPHERALS_START_ADDR, end_addr: `SOC_MEM_MAP_PERIPHERALS_END_ADDR},
        '{ idx: 2, start_addr: `SOC_MEM_MAP_TEST_IP_START_ADDR,    end_addr: `SOC_MEM_MAP_TEST_IP_END_ADDR},
-       '{ idx: 3, start_addr: `SOC_MEM_MAP_ZIPCPU_UART_START_ADDR,    end_addr: `SOC_MEM_MAP_ZIPCPU_UART_END_ADDR}
+       '{ idx: 3, start_addr: `SOC_MEM_MAP_ZIPCPU_UART_START_ADDR,    end_addr: `SOC_MEM_MAP_ZIPCPU_UART_END_ADDR},
+       '{ idx: 4, start_addr: `SOC_MEM_MAP_I2C_START_ADDR,    end_addr: `SOC_MEM_MAP_I2C_END_ADDR}
+
    };
 
     //For legacy reasons, the fc_data port can alias the address prefix 0x000 to 0x1c0. E.g. an access to 0x00001234 is
